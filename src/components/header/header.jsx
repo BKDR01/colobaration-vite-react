@@ -11,7 +11,7 @@ const header = () => {
                 <li className='text-[#9197B3] text-[14px] bg-white rounded-[8px] w-[250px] py-[11px] flex items-center justify-around'>Product ›</li>
                 <li className='text-[#9197B3] text-[14px] bg-[#5932EA] rounded-[8px] w-[250px] py-[11px] flex items-center justify-around'>
                     <div>
-                        <img src={icon3} alt="" />
+                      <h2>I</h2>
                     </div> 
                     <h2 className='font-bold text-[18px] text-white'>›</h2>
                     </li>

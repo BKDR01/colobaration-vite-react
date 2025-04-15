@@ -1,22 +1,31 @@
 import { useState } from 'react'
-import data from './tools.js';
+import initialData  from './tools.js';
 import './App.css'
 function App() {
-  const [text, setText] = useState("Inactive");
-  const [isChanged, setIsChanged] = useState(false);
+  const [search, setSearch] = useState('')
+  const [data, setData] = useState(initialData);
 
-  const handleClick = () => {
-    setText("Active");
-    setIsChanged(!isChanged);
-  };
+  const filteredData = data.filter((item) => 
+    item.customer_name.toLowerCase().includes(search.toLowerCase()) 
+  )
+  
+  const handleClick = (index) => {
+    setData((prevData) =>
+      prevData.map((item, i) => 
+        i === index
+          ? {...item, Status: item.Status === 'Active' ? 'Inactive' : 'Active'}
+          : item
+      )
+    )
+  }; 
 
-  return (
+  return (                
     <>
       <header className='w-[100%] flex bg-[#F7F9FE]'>
         {/* navbar */}
-        <div className='w-[306px] bg-white shadow-[0px_10px_60px_0px_#E2ECF980]'>
+        <div className='w-[306px] h-[100vh] bg-white shadow-[0px_10px_60px_0px_#E2ECF980] fixed'>
             <h2 className='font-bold text-[26px] text-center'>Logotip cuteam</h2>
-            <ul className='w-[250px] border flex flex-wrap mx-auto mt-[60px] justify-center'>
+            <ul className='w-[250px] flex flex-wrap mx-auto mt-[60px] justify-center'>
                 <li className='text-[#9197B3] text-[14px] bg-white rounded-[8px] w-[250px] py-[11px] flex items-center px-[11px] justify-between hover:bg-[#5932EA] hover:text-white'>
                      <div className='flex items-center gap-[14px]'>
                       <h2 className='font-bold text-[26px] text-[#9197B3]'>icon</h2>
@@ -61,8 +70,8 @@ function App() {
                   </li>
               </ul>
         </div>  
-
-      <div className='w-[100%] border'>
+        {/* section */}
+      <div className='w-[80%] ml-[15%]'>
         <nav className='flex justify-around items-center mt-[40px]'>
           <h2 className='text-[24px] font-bold'>Hello Evano 👋🏻,</h2>
           <input type="search" placeholder='search' className='bg-white px-[8px] py-[10px] rounded-[12px] focus:overflow-[0] '/>
@@ -74,22 +83,34 @@ function App() {
                   <p className='text-[14px] text-[#16C098]'>Active Members</p>
                 </div>
                 <div className='flex gap-[16px]'>
-                <input type="search" placeholder='search' className='bg-[#F9FBFF] px-[8px] py-[10px] rounded-[12px] focus:overflow-[0] '/>
+                <input type="search" 
+                value={search}
+                onChange={(e)=>setSearch(e.target.value)}
+                placeholder='search' 
+                className='bg-[#F9FBFF] px-[8px] py-[10px] rounded-[12px] focus:overflow-[0] '/>
+
+
                 <button className='text-[12px] bg-[#F9FBFF] rounded-[10px] text-[#7E7E7E] px-[15px] py-[10px]'>Short by : <span className='text-black font-bold'>Newest  ▿</span></button>
                 </div>
               </div>
             
               <div>
                 {
-                  data?.map((item, index) => (
+                   filteredData.map((item, index) => (
                     <div key={index} className='py-[24px] flex justify-center border border-solid border-[#EEEEEE]'>
                       <div className='w-[886px] flex justify-between'>
-                        <h2>{item.customer_name}</h2>
-                        <h2>{item.Company}</h2>
-                        <h2>{item.phoneNumber}</h2>
-                        <h2>{item.Email}</h2>
-                        <h2>{item.Country}</h2>
-                        <button onClick={handleClick} className={`py-[4px] px-[18px] rounded-[4px] ${isChanged ? "bg-[#FFC5C5] text-[#DF0404] border border-[#DF0404] border-solid" : "bg-[#A6E7D8] text-[#008767] border border-[#00B087] border-solid" }`}>{text}</button>
+                        <h2 className='font-bold text-[#292D32]'>{item.customer_name}</h2>
+                        <h2 className='font-bold text-[#292D32]'>{item.Company}</h2>
+                        <h2 className='font-bold text-[#292D32]'>{item.phoneNumber}</h2>
+                        <h2 className='font-bold text-[#292D32]'>{item.Email}</h2>
+                        <h2 className='font-bold text-[#292D32]'>{item.Country}</h2>
+                        <button onClick={() => handleClick(index)} 
+                      className={`py-[4px] px-[18px] rounded-[4px] ${
+                        item.Status !== 'Active'
+                          ? 'bg-[#FFC5C5] text-[#DF0404] border border-[#DF0404] border-solid'
+                          : 'bg-[#A6E7D8] text-[#008767] border border-[#00B087] border-solid'
+                      }`}
+                        >{item.Status}</button>
                       </div>
                     </div>
                   ))
